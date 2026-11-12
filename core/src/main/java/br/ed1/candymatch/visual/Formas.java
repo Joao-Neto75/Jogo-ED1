@@ -12,16 +12,21 @@ public final class Formas {
     private Formas() {
     }
 
+    /**
+     * Os cantos são setores de 90° (não círculos inteiros) para que nenhuma parte seja pintada duas vezes:
+     * com cor translúcida, sobreposições apareceriam como manchas mais escuras.
+     */
     public static void retanguloArredondado(ShapeRenderer sr, float x, float y, float largura, float altura,
                                             float raio) {
         float r = Math.min(raio, Math.min(largura, altura) / 2f);
+        int segmentos = Math.max(4, (int) (r / 2f));
         sr.rect(x + r, y, largura - 2 * r, altura);
         sr.rect(x, y + r, r, altura - 2 * r);
         sr.rect(x + largura - r, y + r, r, altura - 2 * r);
-        sr.circle(x + r, y + r, r);
-        sr.circle(x + largura - r, y + r, r);
-        sr.circle(x + r, y + altura - r, r);
-        sr.circle(x + largura - r, y + altura - r, r);
+        sr.arc(x + r, y + r, r, 180f, 90f, segmentos);
+        sr.arc(x + largura - r, y + r, r, 270f, 90f, segmentos);
+        sr.arc(x + largura - r, y + altura - r, r, 0f, 90f, segmentos);
+        sr.arc(x + r, y + altura - r, r, 90f, 90f, segmentos);
     }
 
     /** Polígono regular desenhado como leque de triângulos a partir do centro. */
