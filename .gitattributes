@@ -1,0 +1,12 @@
+# Finais de linha consistentes entre Windows, Linux e macOS.
+* text=auto eol=lf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+gradlew text eol=lf
+mvnw text eol=lf
+# Binários: nunca converter.
+*.jar binary
+*.ttf binary
+*.wav binary
+*.png binary
+*.pdf binary
