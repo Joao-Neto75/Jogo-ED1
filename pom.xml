@@ -79,6 +79,8 @@
                     <!-- Só o módulo lwjgl3 tem o que executar. -->
                     <configuration>
                         <skip>true</skip>
+                        <!-- Obrigatório mesmo com skip: o Maven valida o parâmetro antes de pular. -->
+                        <executable>java</executable>
                     </configuration>
                 </plugin>
             </plugins>
