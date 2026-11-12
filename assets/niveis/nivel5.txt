@@ -1,0 +1,4 @@
+# 6 cores e menos jogadas: use a dica com sabedoria.
+metaPontos=900
+limiteJogadas=15
+tipos=VERMELHA,AZUL,VERDE,AMARELA,ROXA,LARANJA

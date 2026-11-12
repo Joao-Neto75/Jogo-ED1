@@ -1,0 +1,4 @@
+# Todas as 6 cores: combinações mais raras.
+metaPontos=1100
+limiteJogadas=20
+tipos=VERMELHA,AZUL,VERDE,AMARELA,ROXA,LARANJA

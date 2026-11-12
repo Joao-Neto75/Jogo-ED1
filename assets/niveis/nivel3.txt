@@ -1,0 +1,4 @@
+# Só 4 cores: cascatas frequentes, meta alta e poucas jogadas.
+metaPontos=1500
+limiteJogadas=12
+tipos=VERMELHA,AZUL,VERDE,AMARELA

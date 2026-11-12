@@ -1,0 +1,4 @@
+# Desafio final: 8 jogadas para fazer 1100 pontos.
+metaPontos=1100
+limiteJogadas=8
+tipos=AZUL,VERDE,ROXA,LARANJA
