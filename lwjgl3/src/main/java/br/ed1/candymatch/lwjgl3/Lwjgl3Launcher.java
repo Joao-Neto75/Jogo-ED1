@@ -15,9 +15,6 @@ public final class Lwjgl3Launcher {
     }
 
     public static void main(String[] args) {
-        if (IniciadorMacOS.reiniciarSeNecessario(Lwjgl3Launcher.class, args)) {
-            return;
-        }
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setTitle("CandyMatch");
         config.setWindowedMode(LARGURA_JANELA, ALTURA_JANELA);

@@ -1,4 +1,4 @@
-# Finais de linha consistentes entre Windows, Linux e macOS.
+# Finais de linha consistentes entre Windows e Linux.
 * text=auto eol=lf
 *.bat text eol=crlf
 *.cmd text eol=crlf

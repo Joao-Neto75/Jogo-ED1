@@ -227,7 +227,7 @@ java -jar lwjgl3/target/CandyMatch.jar   # roda de qualquer pasta; ranking/salva
 ./mvnw -pl lwjgl3 -am compile exec:exec  # compila e abre o jogo
 ```
 
-No macOS, o lançador reinicia a JVM com `-XstartOnFirstThread` sozinho (`lwjgl3/IniciadorMacOS`).
+Plataformas-alvo: Windows e Linux (macOS não é suportado).
 
 ## 12. Estado atual do projeto
 

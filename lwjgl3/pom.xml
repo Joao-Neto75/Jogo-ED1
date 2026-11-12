@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Módulo desktop (Windows, Linux, macOS): lançador LWJGL3 e JAR executável único com os assets. -->
+<!-- Módulo desktop (Windows e Linux): lançador LWJGL3 e JAR executável único com os assets. -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -29,7 +29,7 @@
             <artifactId>gdx-backend-lwjgl3</artifactId>
             <version>${gdx.version}</version>
         </dependency>
-        <!-- Bibliotecas nativas de Windows, Linux e macOS (x64 e ARM) num só jar. -->
+        <!-- Bibliotecas nativas de Windows e Linux (o artefato oficial também inclui as de macOS). -->
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx-platform</artifactId>

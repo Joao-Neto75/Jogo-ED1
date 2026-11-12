@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   Build Maven do CandyMatch (alternativa ao Gradle; os dois usam as mesmas pastas src/main/java e src/test/java).
-  Sem Maven instalado, use o wrapper:  ./mvnw ...  (Linux/macOS)  ou  mvnw.cmd ...  (Windows)
+  Sem Maven instalado, use o wrapper:  ./mvnw ...  (Linux)  ou  mvnw.cmd ...  (Windows)
 
     ./mvnw test                      roda os testes JUnit
     ./mvnw package                   gera lwjgl3/target/CandyMatch.jar (jogo completo, com assets)
