@@ -26,17 +26,17 @@ import java.util.logging.Logger;
  *
  * <p>O arquivo deve vir de {@code Gdx.files.local}: {@code Gdx.files.internal} é somente leitura.
  */
-public class GerenciadorSalvamento {
+public class ArquivoSalvamento {
 
     private static final String SEPARADOR = ";";
     private static final char VAZIO = '.';
     private static final int CAMPOS_CABECALHO = 3;
 
-    private static final Logger LOG = Logger.getLogger(GerenciadorSalvamento.class.getName());
+    private static final Logger LOG = Logger.getLogger(ArquivoSalvamento.class.getName());
 
     private final FileHandle arquivo;
 
-    public GerenciadorSalvamento(FileHandle arquivo) {
+    public ArquivoSalvamento(FileHandle arquivo) {
         this.arquivo = Objects.requireNonNull(arquivo, "arquivo de salvamento não pode ser nulo");
     }
 

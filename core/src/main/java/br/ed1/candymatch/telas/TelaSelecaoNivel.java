@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 /**
- * Lista os níveis disponíveis (lidos pelo CarregadorNivel) e inicia a TelaJogo.
+ * Lista os níveis disponíveis (lidos pelo ArquivoNivel) e inicia a TelaJogo.
  * Requisitos demonstrados: Arquivos (níveis lidos de texto), Vetor (níveis carregados).
  */
 public class TelaSelecaoNivel extends TelaBase {
@@ -51,11 +51,11 @@ public class TelaSelecaoNivel extends TelaBase {
 
     /** Nível com arquivo inválido vira null no vetor (e não ganha botão), sem impedir os demais. */
     private Nivel[] carregarNiveis() {
-        int quantidade = jogo.getCarregadorNivel().contarNiveis();
+        int quantidade = jogo.getArquivoNivel().contarNiveis();
         Nivel[] carregados = new Nivel[quantidade];
         for (int i = 0; i < quantidade; i++) {
             try {
-                carregados[i] = jogo.getCarregadorNivel().carregar(i + 1);
+                carregados[i] = jogo.getArquivoNivel().carregar(i + 1);
             } catch (IllegalArgumentException e) {
                 Gdx.app.error("Níveis", "Nível " + (i + 1) + " ignorado: " + e.getMessage());
                 erro = "Algum nível tem arquivo inválido (veja o log).";

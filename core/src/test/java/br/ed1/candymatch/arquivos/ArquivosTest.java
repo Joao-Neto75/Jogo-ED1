@@ -30,7 +30,7 @@ class ArquivosTest {
 
     @Test
     void carregaNiveisReaisDoProjeto() {
-        CarregadorNivel carregador = new CarregadorNivel(new FileHandle(new File("../assets/niveis")));
+        ArquivoNivel carregador = new ArquivoNivel(new FileHandle(new File("../assets/niveis")));
         assertTrue(carregador.contarNiveis() >= 2);
         Nivel nivel1 = carregador.carregar(1);
         assertEquals(1, nivel1.getNumero());
@@ -42,7 +42,7 @@ class ArquivosTest {
     void carregaNivelComComentariosELinhasVazias() {
         arquivo("nivel1.txt").writeString("# teste\n\nmetaPontos=500\nlimiteJogadas = 12\ntipos=vermelha, AZUL,VERDE\n",
                 false, "UTF-8");
-        Nivel n = new CarregadorNivel(new FileHandle(pasta)).carregar(1);
+        Nivel n = new ArquivoNivel(new FileHandle(pasta)).carregar(1);
         assertEquals(500, n.getMetaPontos());
         assertEquals(12, n.getLimiteJogadas());
         assertArrayEquals(new TipoGema[]{TipoGema.VERMELHA, TipoGema.AZUL, TipoGema.VERDE}, n.getTiposDisponiveis());
@@ -50,7 +50,7 @@ class ArquivosTest {
 
     @Test
     void nivelInvalidoOuAusenteLancaExcecaoClara() {
-        CarregadorNivel carregador = new CarregadorNivel(new FileHandle(pasta));
+        ArquivoNivel carregador = new ArquivoNivel(new FileHandle(pasta));
         assertThrows(IllegalArgumentException.class, () -> carregador.carregar(9));
         arquivo("nivel1.txt").writeString("metaPontos=abc\nlimiteJogadas=1\ntipos=AZUL,VERDE,ROXA", false, "UTF-8");
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> carregador.carregar(1));
@@ -63,14 +63,14 @@ class ArquivosTest {
 
     @Test
     void rankingInexistenteCarregaVazio() {
-        assertTrue(new GerenciadorArquivoRanking(arquivo("ranking.txt")).carregar().estaVazia());
+        assertTrue(new ArquivoRanking(arquivo("ranking.txt")).carregar().estaVazia());
     }
 
     @Test
     void rankingSalvaECarregaIgnorandoLinhasInvalidas() {
         FileHandle f = arquivo("ranking.txt");
         f.writeString("Ana;300\nlixo\n;10\nBia;-5\nCaio;abc\nDavi;120\n", false, "UTF-8");
-        GerenciadorArquivoRanking g = new GerenciadorArquivoRanking(f);
+        ArquivoRanking g = new ArquivoRanking(f);
         ListaEncadeada<RegistroPontuacao> lista = g.carregar();
         assertEquals(2, lista.tamanho());
         assertEquals("Ana", lista.obter(0).getNome());
@@ -82,12 +82,12 @@ class ArquivosTest {
 
     @Test
     void registrarMantemTop10OrdenadoNoArquivo() {
-        GerenciadorArquivoRanking g = new GerenciadorArquivoRanking(arquivo("ranking.txt"));
+        ArquivoRanking g = new ArquivoRanking(arquivo("ranking.txt"));
         for (int i = 1; i <= 12; i++) {
             g.registrar(new RegistroPontuacao("Jogador" + i, i * 10));
         }
         ListaEncadeada<RegistroPontuacao> lista = g.carregar();
-        assertEquals(GerenciadorArquivoRanking.MAXIMO_REGISTROS, lista.tamanho());
+        assertEquals(ArquivoRanking.MAXIMO_REGISTROS, lista.tamanho());
         assertEquals(120, lista.obter(0).getPontos());
         assertEquals(30, lista.obter(9).getPontos());
         assertFalse(g.registrar(new RegistroPontuacao("Fraco", 1)));
@@ -96,12 +96,12 @@ class ArquivosTest {
 
     @Test
     void sanitizarRemoveSeparador() {
-        assertEquals("AnaBia", GerenciadorArquivoRanking.sanitizarNome(" Ana;Bia "));
+        assertEquals("AnaBia", ArquivoRanking.sanitizarNome(" Ana;Bia "));
     }
 
     @Test
     void salvamentoIdaEVolta() {
-        GerenciadorSalvamento g = new GerenciadorSalvamento(arquivo("salvamento.txt"));
+        ArquivoSalvamento g = new ArquivoSalvamento(arquivo("salvamento.txt"));
         assertFalse(g.existeSalvamento());
         assertTrue(g.carregar().isEmpty());
 
@@ -121,7 +121,7 @@ class ArquivosTest {
     @Test
     void salvamentoCorrompidoRetornaVazio() {
         FileHandle f = arquivo("salvamento.txt");
-        GerenciadorSalvamento g = new GerenciadorSalvamento(f);
+        ArquivoSalvamento g = new ArquivoSalvamento(f);
         f.writeString("1;2\nVAE\n", false, "UTF-8");
         assertTrue(g.carregar().isEmpty());
         f.writeString("1;2;3\nVAE\nVA\n", false, "UTF-8");

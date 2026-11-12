@@ -9,8 +9,8 @@ import br.ed1.candymatch.visual.Botao;
 import br.ed1.candymatch.visual.ControladorEntrada;
 import br.ed1.candymatch.visual.GerenciadorAnimacao;
 import br.ed1.candymatch.visual.GerenciadorSom;
-import br.ed1.candymatch.visual.Hud;
-import br.ed1.candymatch.visual.RenderizadorTabuleiro;
+import br.ed1.candymatch.visual.Placar;
+import br.ed1.candymatch.visual.DesenhoTabuleiro;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -42,10 +42,10 @@ public class TelaJogo extends TelaBase {
     private static final Color COR_DICA = new Color(1f, 0.9f, 0.3f, 1f);
 
     private final Partida partida;
-    private final RenderizadorTabuleiro renderizador;
+    private final DesenhoTabuleiro desenho;
     private final GerenciadorAnimacao animacao;
     private final ControladorEntrada controlador;
-    private final Hud hud;
+    private final Placar placar;
     private final Botao botaoDesfazer;
     private final Botao botaoDica;
 
@@ -60,14 +60,14 @@ public class TelaJogo extends TelaBase {
         this.partida = Objects.requireNonNull(partida, "partida não pode ser nula");
         Tabuleiro tabuleiro = partida.getTabuleiro();
         float larguraTabuleiro = tabuleiro.getColunas() * TAMANHO_CELULA;
-        renderizador = new RenderizadorTabuleiro((LARGURA_MUNDO - larguraTabuleiro) / 2f, ORIGEM_TABULEIRO_Y,
+        desenho = new DesenhoTabuleiro((LARGURA_MUNDO - larguraTabuleiro) / 2f, ORIGEM_TABULEIRO_Y,
                 TAMANHO_CELULA, tabuleiro.getLinhas(), tabuleiro.getColunas());
         animacao = new GerenciadorAnimacao(tabuleiro, this::aoIniciarEtapa);
-        controlador = new ControladorEntrada(renderizador, viewport, this::jogar,
+        controlador = new ControladorEntrada(desenho, viewport, this::jogar,
                 () -> animacao.estaAnimando() || partida.estaFinalizada());
-        float topoTabuleiro = renderizador.getTopo();
-        hud = new Hud(30f, topoTabuleiro + 22f, LARGURA_MUNDO - 60f, ALTURA_MUNDO - topoTabuleiro - 32f);
-        hud.sincronizarPontos(partida.getPontos());
+        float topoTabuleiro = desenho.getTopo();
+        placar = new Placar(30f, topoTabuleiro + 22f, LARGURA_MUNDO - 60f, ALTURA_MUNDO - topoTabuleiro - 32f);
+        placar.sincronizarPontos(partida.getPontos());
 
         float espaco = (LARGURA_MUNDO - 3 * LARGURA_BOTAO) / 4f;
         botaoDesfazer = botoes.adicionar(new Botao("Desfazer", espaco, Y_BOTOES, LARGURA_BOTAO, ALTURA_BOTAO,
@@ -114,9 +114,9 @@ public class TelaJogo extends TelaBase {
         }
         int cascata = partida.getMaiorCascataUltimaJogada();
         if (cascata > 1) {
-            hud.mostrarMensagem("Cascata x" + cascata + "!");
+            placar.mostrarMensagem("Cascata x" + cascata + "!");
         } else {
-            hud.mostrarMensagem("+" + partida.getPontosUltimaJogada());
+            placar.mostrarMensagem("+" + partida.getPontosUltimaJogada());
         }
     }
 
@@ -127,7 +127,7 @@ public class TelaJogo extends TelaBase {
             case REMOCAO -> som.tocar(GerenciadorSom.Som.COMBINACAO, 1f + (rodadaRemocao - 1) * TOM_EXTRA_POR_CASCATA);
             case EMBARALHAMENTO -> {
                 som.tocar(GerenciadorSom.Som.EMBARALHAR);
-                hud.mostrarMensagem("Reorganizando!");
+                placar.mostrarMensagem("Reorganizando!");
             }
             default -> {
             }
@@ -142,7 +142,7 @@ public class TelaJogo extends TelaBase {
             limparDica();
             controlador.limparSelecao();
             animacao.sincronizar();
-            hud.sincronizarPontos(partida.getPontos());
+            placar.sincronizarPontos(partida.getPontos());
             jogo.getSom().tocar(GerenciadorSom.Som.DESFAZER);
         }
     }
@@ -173,9 +173,9 @@ public class TelaJogo extends TelaBase {
     private void salvarSeEmAndamento() {
         try {
             if (partida.estaFinalizada()) {
-                jogo.getSalvamento().apagar();
+                jogo.getArquivoSalvamento().apagar();
             } else {
-                jogo.getSalvamento().salvar(partida.capturarEstado());
+                jogo.getArquivoSalvamento().salvar(partida.capturarEstado());
             }
         } catch (IllegalStateException e) {
             Gdx.app.error("Jogo", "Falha ao atualizar o salvamento", e);
@@ -192,7 +192,7 @@ public class TelaJogo extends TelaBase {
     protected void atualizar(float delta) {
         tempo += delta;
         animacao.atualizar(delta);
-        hud.atualizar(delta, partida.getPontos());
+        placar.atualizar(delta, partida.getPontos());
         if (tempoDica > 0f) {
             tempoDica -= delta;
             if (tempoDica <= 0f) {
@@ -213,7 +213,7 @@ public class TelaJogo extends TelaBase {
             fimAnunciado = true;
             salvarSeEmAndamento();
             jogo.getSom().tocar(partida.venceu() ? GerenciadorSom.Som.VITORIA : GerenciadorSom.Som.DERROTA);
-            hud.mostrarMensagem(partida.venceu() ? "Meta atingida!" : "Sem jogadas!");
+            placar.mostrarMensagem(partida.venceu() ? "Meta atingida!" : "Sem jogadas!");
         }
         tempoAposFim += delta;
         if (tempoAposFim >= ESPERA_FIM_DE_JOGO) {
@@ -223,25 +223,25 @@ public class TelaJogo extends TelaBase {
 
     @Override
     protected void desenharFormas(ShapeRenderer formas) {
-        renderizador.desenharFundo(formas);
+        desenho.desenharFundo(formas);
         if (controlador.getSelecionada() != null && !animacao.estaAnimando()) {
             float pulso = 0.25f + 0.1f * MathUtils.sin(tempo * 8f);
-            renderizador.desenharDestaque(formas, controlador.getSelecionada(), COR_SELECAO, pulso);
+            desenho.desenharDestaque(formas, controlador.getSelecionada(), COR_SELECAO, pulso);
         }
         if (dicaAtual != null) {
             float pulso = 0.2f + 0.25f * (0.5f + 0.5f * MathUtils.sin(tempo * 7f));
-            renderizador.desenharDestaque(formas, dicaAtual.origem(), COR_DICA, pulso);
-            renderizador.desenharDestaque(formas, dicaAtual.destino(), COR_DICA, pulso);
+            desenho.desenharDestaque(formas, dicaAtual.origem(), COR_DICA, pulso);
+            desenho.desenharDestaque(formas, dicaAtual.destino(), COR_DICA, pulso);
         }
-        animacao.desenhar(formas, renderizador);
+        animacao.desenhar(formas, desenho);
         // O painel vem depois das gemas para cobrir as gemas novas que caem de cima do tabuleiro.
-        hud.desenharFormas(formas, partida);
+        placar.desenharFormas(formas, partida);
     }
 
     @Override
     protected void desenharTextos(SpriteBatch lote) {
-        hud.desenharTextos(lote, jogo.getFontes(), partida);
-        hud.desenharMensagem(lote, jogo.getFontes(), LARGURA_MUNDO / 2f,
-                renderizador.getTopo() / 2f + ORIGEM_TABULEIRO_Y / 2f + 40f);
+        placar.desenharTextos(lote, jogo.getFontes(), partida);
+        placar.desenharMensagem(lote, jogo.getFontes(), LARGURA_MUNDO / 2f,
+                desenho.getTopo() / 2f + ORIGEM_TABULEIRO_Y / 2f + 40f);
     }
 }

@@ -20,7 +20,7 @@ public class ControladorEntrada extends InputAdapter {
     /** Fração da célula que o arraste precisa percorrer para virar jogada. */
     private static final float LIMIAR_ARRASTE = 0.45f;
 
-    private final RenderizadorTabuleiro renderizador;
+    private final DesenhoTabuleiro desenho;
     private final Viewport viewport;
     private final Consumer<Jogada> aoJogar;
     private final BooleanSupplier bloqueado;
@@ -31,9 +31,9 @@ public class ControladorEntrada extends InputAdapter {
     private Posicao origemArraste;
 
     /** @param bloqueado quando true (animação em andamento, fim de jogo), a entrada é ignorada */
-    public ControladorEntrada(RenderizadorTabuleiro renderizador, Viewport viewport, Consumer<Jogada> aoJogar,
+    public ControladorEntrada(DesenhoTabuleiro desenho, Viewport viewport, Consumer<Jogada> aoJogar,
                               BooleanSupplier bloqueado) {
-        this.renderizador = Objects.requireNonNull(renderizador, "renderizador não pode ser nulo");
+        this.desenho = Objects.requireNonNull(desenho, "desenho não pode ser nulo");
         this.viewport = Objects.requireNonNull(viewport, "viewport não pode ser nulo");
         this.aoJogar = Objects.requireNonNull(aoJogar, "callback aoJogar não pode ser nulo");
         this.bloqueado = Objects.requireNonNull(bloqueado, "condição de bloqueio não pode ser nula");
@@ -45,7 +45,7 @@ public class ControladorEntrada extends InputAdapter {
             return false;
         }
         Vector2 mundo = viewport.unproject(auxiliar.set(telaX, telaY));
-        Optional<Posicao> clicada = renderizador.posicaoEm(mundo.x, mundo.y);
+        Optional<Posicao> clicada = desenho.posicaoEm(mundo.x, mundo.y);
         if (clicada.isEmpty()) {
             selecionada = null;
             return false;
@@ -69,7 +69,7 @@ public class ControladorEntrada extends InputAdapter {
         Vector2 mundo = viewport.unproject(auxiliar.set(telaX, telaY));
         float dx = mundo.x - inicioArraste.x;
         float dy = mundo.y - inicioArraste.y;
-        float limiar = renderizador.getTamanhoCelula() * LIMIAR_ARRASTE;
+        float limiar = desenho.getTamanhoCelula() * LIMIAR_ARRASTE;
         if (Math.max(Math.abs(dx), Math.abs(dy)) < limiar) {
             return true;
         }
@@ -80,8 +80,8 @@ public class ControladorEntrada extends InputAdapter {
             // Arrastar para cima (dy > 0) diminui o índice da linha.
             destino = new Posicao(origemArraste.linha() + (dy > 0 ? -1 : 1), origemArraste.coluna());
         }
-        Vector2 centroDestino = auxiliar.set(renderizador.centroX(destino.coluna()), renderizador.centroY(destino.linha()));
-        if (renderizador.posicaoEm(centroDestino.x, centroDestino.y).isPresent()) {
+        Vector2 centroDestino = auxiliar.set(desenho.centroX(destino.coluna()), desenho.centroY(destino.linha()));
+        if (desenho.posicaoEm(centroDestino.x, centroDestino.y).isPresent()) {
             jogar(origemArraste, destino);
         } else {
             origemArraste = null;

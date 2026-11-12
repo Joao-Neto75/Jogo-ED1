@@ -1,7 +1,7 @@
 apply plugin: 'application'
 
 application {
-    mainClass = 'br.ed1.candymatch.lwjgl3.Lwjgl3Launcher'
+    mainClass = 'br.ed1.candymatch.desktop.IniciarJogo'
 }
 
 dependencies {

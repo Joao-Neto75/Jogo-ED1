@@ -27,7 +27,7 @@ class GravidadePreenchimentoTest {
                 "A.",
                 "..");
         Fila<EventoTabuleiro> eventos = new Fila<>();
-        new GerenciadorGravidade().aplicar(t, eventos);
+        new Gravidade().aplicar(t, eventos);
         assertEquals("..\n..\nVA\nAE", FabricaTabuleiro.paraTexto(t));
 
         // Coluna 0: A cai de (2,0) p/ (3,0), depois V de (0,0) p/ (2,0); coluna 1: E e depois A.
@@ -42,7 +42,7 @@ class GravidadePreenchimentoTest {
     void gravidadeSemVaziosNaoGeraEventos() {
         Tabuleiro t = FabricaTabuleiro.deTexto("VA", "AV");
         Fila<EventoTabuleiro> eventos = new Fila<>();
-        new GerenciadorGravidade().aplicar(t, eventos);
+        new Gravidade().aplicar(t, eventos);
         assertTrue(eventos.estaVazia());
     }
 

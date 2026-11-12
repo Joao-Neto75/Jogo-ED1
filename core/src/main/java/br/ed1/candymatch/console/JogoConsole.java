@@ -1,6 +1,6 @@
 package br.ed1.candymatch.console;
 
-import br.ed1.candymatch.arquivos.CarregadorNivel;
+import br.ed1.candymatch.arquivos.ArquivoNivel;
 import br.ed1.candymatch.logica.Partida;
 import br.ed1.candymatch.modelo.Jogada;
 import br.ed1.candymatch.modelo.Nivel;
@@ -26,7 +26,7 @@ public final class JogoConsole {
     }
 
     public static void main(String[] args) {
-        CarregadorNivel carregador = new CarregadorNivel(new FileHandle(new File(PASTA_NIVEIS)));
+        ArquivoNivel carregador = new ArquivoNivel(new FileHandle(new File(PASTA_NIVEIS)));
         int numeroNivel = args.length > 0 ? lerInteiro(args[0], 1) : 1;
         Nivel nivel;
         try {

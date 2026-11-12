@@ -42,9 +42,9 @@ class PartidaTest {
         Nivel n = nivel(meta, jogadas);
         Random aleatorio = new Random(42);
         BuscadorCombinacoes buscador = new BuscadorCombinacoes();
-        return new Partida(n, t, buscador, new GerenciadorGravidade(),
+        return new Partida(n, t, buscador, new Gravidade(),
                 new PreenchedorTabuleiro(n.getTiposDisponiveis(), aleatorio), new CalculadoraPontuacao(),
-                new GerenciadorDesfazer(), new BuscadorDica(buscador));
+                new HistoricoJogadas(), new BuscadorDica(buscador));
     }
 
     @Test

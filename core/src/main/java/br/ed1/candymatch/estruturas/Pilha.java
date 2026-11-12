@@ -6,7 +6,7 @@ import java.util.Objects;
 /**
  * Pilha genérica (LIFO) encadeada pelo topo.
  * Requisitos: Pilha, Generic.
- * Uso no jogo: GerenciadorDesfazer empilha o estado da partida antes de cada jogada.
+ * Uso no jogo: HistoricoJogadas empilha o estado da partida antes de cada jogada.
  *
  * <p>Complexidade: empilhar, desempilhar, espiar, tamanho e estaVazia O(1).
  */

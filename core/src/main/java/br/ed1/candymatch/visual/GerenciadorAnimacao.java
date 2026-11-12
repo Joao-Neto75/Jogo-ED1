@@ -99,13 +99,13 @@ public class GerenciadorAnimacao {
         return visual;
     }
 
-    public void desenhar(ShapeRenderer sr, RenderizadorTabuleiro renderizador) {
+    public void desenhar(ShapeRenderer sr, DesenhoTabuleiro desenho) {
         for (int linha = 0; linha < visual.getLinhas(); linha++) {
             for (int coluna = 0; coluna < visual.getColunas(); coluna++) {
                 Gema gema = visual.obterGema(new Posicao(linha, coluna));
                 if (gema != null && !emMovimento[linha][coluna]) {
-                    renderizador.desenharGema(sr, gema.getTipo(), renderizador.centroX(coluna),
-                            renderizador.centroY(linha), 1f, 1f);
+                    desenho.desenharGema(sr, gema.getTipo(), desenho.centroX(coluna),
+                            desenho.centroY(linha), 1f, 1f);
                 }
             }
         }
@@ -114,11 +114,11 @@ public class GerenciadorAnimacao {
         }
         float progresso = Math.min(1f, tempo / duracao);
         for (EventoTabuleiro evento : etapa) {
-            desenharEvento(sr, renderizador, evento, progresso);
+            desenharEvento(sr, desenho, evento, progresso);
         }
     }
 
-    private void desenharEvento(ShapeRenderer sr, RenderizadorTabuleiro r, EventoTabuleiro evento, float progresso) {
+    private void desenharEvento(ShapeRenderer sr, DesenhoTabuleiro r, EventoTabuleiro evento, float progresso) {
         switch (evento.tipo()) {
             case TROCA -> {
                 float p = Interpolation.smooth.apply(progresso);
@@ -146,7 +146,7 @@ public class GerenciadorAnimacao {
         }
     }
 
-    private static void desenharDeslizando(ShapeRenderer sr, RenderizadorTabuleiro r, Gema gema, Posicao de,
+    private static void desenharDeslizando(ShapeRenderer sr, DesenhoTabuleiro r, Gema gema, Posicao de,
                                            Posicao para, float p) {
         if (gema == null) {
             return;

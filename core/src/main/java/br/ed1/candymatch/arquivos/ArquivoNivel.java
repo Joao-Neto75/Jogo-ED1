@@ -17,7 +17,7 @@ import java.util.Objects;
  * Linhas vazias e iniciadas por '#' são ignoradas.
  * Requisitos: Arquivos, Vetor (tipos de gema).
  */
-public class CarregadorNivel {
+public class ArquivoNivel {
 
     private static final String CHAVE_META = "metaPontos";
     private static final String CHAVE_JOGADAS = "limiteJogadas";
@@ -27,7 +27,7 @@ public class CarregadorNivel {
     private final FileHandle pastaNiveis;
 
     /** @param pastaNiveis normalmente {@code Gdx.files.internal("niveis")} */
-    public CarregadorNivel(FileHandle pastaNiveis) {
+    public ArquivoNivel(FileHandle pastaNiveis) {
         this.pastaNiveis = Objects.requireNonNull(pastaNiveis, "pasta de níveis não pode ser nula");
     }
 

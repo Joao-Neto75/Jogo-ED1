@@ -15,16 +15,16 @@ import java.util.logging.Logger;
  *
  * <p>O arquivo deve vir de {@code Gdx.files.local}: {@code Gdx.files.internal} é somente leitura.
  */
-public class GerenciadorArquivoRanking {
+public class ArquivoRanking {
 
     public static final int MAXIMO_REGISTROS = 10;
     public static final String SEPARADOR = ";";
 
-    private static final Logger LOG = Logger.getLogger(GerenciadorArquivoRanking.class.getName());
+    private static final Logger LOG = Logger.getLogger(ArquivoRanking.class.getName());
 
     private final FileHandle arquivo;
 
-    public GerenciadorArquivoRanking(FileHandle arquivo) {
+    public ArquivoRanking(FileHandle arquivo) {
         this.arquivo = Objects.requireNonNull(arquivo, "arquivo do ranking não pode ser nulo");
     }
 

@@ -1,17 +1,17 @@
-package br.ed1.candymatch.lwjgl3;
+package br.ed1.candymatch.desktop;
 
 import br.ed1.candymatch.JogoPrincipal;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
 /** Ponto de entrada da versão desktop. */
-public final class Lwjgl3Launcher {
+public final class IniciarJogo {
 
     private static final int LARGURA_JANELA = 800;
     private static final int ALTURA_JANELA = 900;
     private static final int FPS = 60;
 
-    private Lwjgl3Launcher() {
+    private IniciarJogo() {
     }
 
     public static void main(String[] args) {

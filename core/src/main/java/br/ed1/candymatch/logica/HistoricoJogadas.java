@@ -11,7 +11,7 @@ import java.util.Objects;
  *
  * <p>Complexidade: registrar e desfazer O(1).
  */
-public class GerenciadorDesfazer {
+public class HistoricoJogadas {
 
     private final Pilha<EstadoPartida> historico = new Pilha<>();
 

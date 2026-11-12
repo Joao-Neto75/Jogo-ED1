@@ -35,9 +35,9 @@ Cada item precisa estar **claramente presente e demonstrável** no código:
 | Vetor ou Matriz | `Gem[8][8]` no tabuleiro; vetores para tipos de gema, config de níveis, top 10 | `modelo/Tabuleiro`, `modelo/Nivel` |
 | Generic | `No<T>`, `ListaEncadeada<T>`, `Pilha<T>`, `Fila<T>`; ordenação com `<T extends Comparable<T>>` ou `Comparator<T>` | `estruturas/`, `algoritmos/` |
 | Arquivos | Ranking (`ranking.txt`, `nome;pontos`), save/continuar partida (`salvamento.txt`), leitura de níveis (`niveis/nivelN.txt`) | `arquivos/` |
-| Pilha | Botão Desfazer jogada (empilha estados, desempilha ao desfazer) | `logica/GerenciadorDesfazer` + `estruturas/Pilha` |
-| Fila | Fila de eventos/animações (matches e quedas em ordem, essencial p/ cascata) | `logica/Partida`, `GerenciadorGravidade`, `PreenchedorTabuleiro` produzem; `visual/GerenciadorAnimacao` consome |
-| Lista encadeada | Lista de matches por rodada; ranking carregado do arquivo; botões da tela | `estruturas/ListaEncadeada`, usada em `BuscadorCombinacoes`, `Combinacao`, `logica/Ranking`, `GerenciadorArquivoRanking`, `visual/GrupoBotoes` |
+| Pilha | Botão Desfazer jogada (empilha estados, desempilha ao desfazer) | `logica/HistoricoJogadas` + `estruturas/Pilha` |
+| Fila | Fila de eventos/animações (matches e quedas em ordem, essencial p/ cascata) | `logica/Partida`, `Gravidade`, `PreenchedorTabuleiro` produzem; `visual/GerenciadorAnimacao` consome |
+| Lista encadeada | Lista de matches por rodada; ranking carregado do arquivo; botões da tela | `estruturas/ListaEncadeada`, usada em `BuscadorCombinacoes`, `Combinacao`, `logica/Ranking`, `ArquivoRanking`, `visual/GrupoBotoes` |
 | Algoritmo de busca | Busca binária do recorde por nome (tela Ranking); busca sequencial da dica e do jogador no ranking | `algoritmos/Buscador`, usado em `logica/Ranking` e `logica/BuscadorDica` |
 | Algoritmo de ordenação | MergeSort (estável) para ranking por pontuação e por nome | `algoritmos/Ordenador`, usado em `logica/Ranking` |
 
@@ -76,18 +76,18 @@ Jogo-ED1/  (raiz do Gradle: settings.gradle, build.gradle, gradle.properties)
 │   ├── telas/       TelaBase, TelaMenu, TelaSelecaoNivel, TelaJogo, TelaFimDeJogo, TelaRanking
 │   ├── modelo/      Gema, TipoGema, Tabuleiro (matriz), Posicao, Jogada, Combinacao, Nivel,
 │   │                RegistroPontuacao, EstadoPartida, EventoTabuleiro
-│   ├── logica/      Partida (coordena o ciclo), BuscadorCombinacoes, GerenciadorGravidade,
-│   │                PreenchedorTabuleiro, BuscadorDica, CalculadoraPontuacao, GerenciadorDesfazer,
+│   ├── logica/      Partida (coordena o ciclo), BuscadorCombinacoes, Gravidade,
+│   │                PreenchedorTabuleiro, BuscadorDica, CalculadoraPontuacao, HistoricoJogadas,
 │   │                Ranking (top 10, recorde por jogador, busca binária por nome)
 │   ├── estruturas/  No<T>, ListaEncadeada<T>, Pilha<T>, Fila<T>
 │   ├── algoritmos/  Ordenador (MergeSort), Buscador (binária e sequencial)
-│   ├── arquivos/    GerenciadorArquivoRanking, GerenciadorSalvamento, CarregadorNivel
-│   ├── visual/      RenderizadorTabuleiro, ControladorEntrada, GerenciadorAnimacao, Hud,
+│   ├── arquivos/    ArquivoRanking, ArquivoSalvamento, ArquivoNivel
+│   ├── visual/      DesenhoTabuleiro, ControladorEntrada, GerenciadorAnimacao, Placar,
 │   │                Fontes (FreeType), GerenciadorSom, Botao, GrupoBotoes, CampoTexto, Formas
 │   └── console/     JogoConsole (Fase 2: jogo no terminal, só a lógica)
 ├── core/src/test/java/...  testes JUnit 5
 ├── assets/          imagens/, sons/, fontes/, niveis/ (nivel1.txt, nivel2.txt, ...)
-└── lwjgl3/          Lwjgl3Launcher (desktop)
+└── desktop/         IniciarJogo (abre a janela no PC; é a classe que se executa)
 ```
 
 ### Regras de dependência entre camadas
@@ -114,12 +114,12 @@ Jogo-ED1/  (raiz do Gradle: settings.gradle, build.gradle, gradle.properties)
 **`logica/BuscadorCombinacoes`**
 - Varre linhas e colunas e devolve os matches como `ListaEncadeada<Match>`.
 
-**`logica/GerenciadorGravidade` e `PreenchedorTabuleiro`**
+**`logica/Gravidade` e `PreenchedorTabuleiro`**
 - Gravidade: gemas caem para preencher vazios por coluna.
 - Refill: gera novas gemas no topo para completar as colunas.
 - Ambos devem produzir **eventos** (ex.: "gema X caiu de A para B") em uma `Fila` para a UI animar na ordem.
 
-**`logica/GerenciadorDesfazer`**
+**`logica/HistoricoJogadas`**
 - Usa `Pilha` para guardar snapshots do estado (tabuleiro + pontos + jogadas restantes) antes de cada jogada válida.
 - `undo()` restaura o último snapshot. Definir limite de profundidade se necessário.
 
@@ -139,16 +139,16 @@ Jogo-ED1/  (raiz do Gradle: settings.gradle, build.gradle, gradle.properties)
 - Uso: consultar recorde de um jogador por nome no ranking.
 
 **`arquivos/`**
-- `GerenciadorArquivoRanking`: lê/grava ranking em texto (`nome;pontos`), carrega para `ListaEncadeada<RegistroPontuacao>`, mantém top 10.
-- `GerenciadorSalvamento`: serializa tabuleiro, nível, pontos e jogadas restantes; permite continuar partida.
-- `CarregadorNivel`: lê `assets/niveis/nivelN.txt` (meta de pontos, limite de jogadas, tipos de gema, etc.).
+- `ArquivoRanking`: lê/grava ranking em texto (`nome;pontos`), carrega para `ListaEncadeada<RegistroPontuacao>`, mantém top 10.
+- `ArquivoSalvamento`: serializa tabuleiro, nível, pontos e jogadas restantes; permite continuar partida.
+- `ArquivoNivel`: lê `assets/niveis/nivelN.txt` (meta de pontos, limite de jogadas, tipos de gema, etc.).
 - **Atenção libGDX:** `Gdx.files.internal` é somente leitura (use para ler assets/níveis). Para **escrever** ranking e save, use `Gdx.files.local`.
 
 **`visual/`**
-- `RenderizadorTabuleiro`: desenha a matriz na tela.
+- `DesenhoTabuleiro`: desenha a matriz na tela.
 - `ControladorEntrada`: converte clique/arraste em posições do tabuleiro.
 - `GerenciadorAnimacao`: consome a fila de eventos e anima troca, queda e explosão em ordem.
-- `Hud`: pontos, jogadas restantes, botões Desfazer e Dica.
+- `Placar`: pontos, jogadas restantes, botões Desfazer e Dica.
 
 ## 6. Prioridades de implementação
 
@@ -215,16 +215,16 @@ Os dois builds coexistem e usam as mesmas pastas (`src/main/java`, `src/test/jav
 
 ```bash
 # Gradle (Windows: gradlew.bat)
-./gradlew lwjgl3:run      # roda o jogo (desktop)
+./gradlew desktop:run     # roda o jogo (desktop)
 ./gradlew build           # compila tudo
 ./gradlew test            # roda testes
 ./gradlew :core:runConsole --console=plain   # joga no terminal (modo console)
 
 # Maven (Windows: mvnw.cmd)
 ./mvnw test                              # roda testes
-./mvnw package                           # gera lwjgl3/target/CandyMatch.jar (com assets embutidos)
-java -jar lwjgl3/target/CandyMatch.jar   # roda de qualquer pasta; ranking/salvamento ficam na pasta atual
-./mvnw -pl lwjgl3 -am compile exec:exec  # compila e abre o jogo
+./mvnw package                           # gera desktop/target/CandyMatch.jar (com assets embutidos)
+java -jar desktop/target/CandyMatch.jar   # roda de qualquer pasta; ranking/salvamento ficam na pasta atual
+./mvnw -pl desktop -am compile exec:exec  # compila e abre o jogo
 ```
 
 Plataformas-alvo: Windows e Linux (macOS não é suportado).

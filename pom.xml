@@ -4,9 +4,9 @@
   Sem Maven instalado, use o wrapper:  ./mvnw ...  (Linux)  ou  mvnw.cmd ...  (Windows)
 
     ./mvnw test                      roda os testes JUnit
-    ./mvnw package                   gera lwjgl3/target/CandyMatch.jar (jogo completo, com assets)
-    java -jar lwjgl3/target/CandyMatch.jar
-    ./mvnw -pl lwjgl3 -am compile exec:exec   compila e abre o jogo direto
+    ./mvnw package                   gera desktop/target/CandyMatch.jar (jogo completo, com assets)
+    java -jar desktop/target/CandyMatch.jar
+    ./mvnw -pl desktop -am compile exec:exec   compila e abre o jogo direto
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -21,7 +21,7 @@
 
     <modules>
         <module>core</module>
-        <module>lwjgl3</module>
+        <module>desktop</module>
     </modules>
 
     <properties>
@@ -76,7 +76,7 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>exec-maven-plugin</artifactId>
                     <version>3.3.0</version>
-                    <!-- Só o módulo lwjgl3 tem o que executar. -->
+                    <!-- Só o módulo desktop tem o que executar. -->
                     <configuration>
                         <skip>true</skip>
                         <!-- Obrigatório mesmo com skip: o Maven valida o parâmetro antes de pular. -->

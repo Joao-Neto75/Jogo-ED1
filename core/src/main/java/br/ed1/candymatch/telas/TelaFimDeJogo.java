@@ -1,7 +1,7 @@
 package br.ed1.candymatch.telas;
 
 import br.ed1.candymatch.JogoPrincipal;
-import br.ed1.candymatch.arquivos.GerenciadorArquivoRanking;
+import br.ed1.candymatch.arquivos.ArquivoRanking;
 import br.ed1.candymatch.logica.Partida;
 import br.ed1.candymatch.modelo.Nivel;
 import br.ed1.candymatch.modelo.RegistroPontuacao;
@@ -51,7 +51,7 @@ public class TelaFimDeJogo extends TelaBase {
         botaoSalvar = botoes.adicionar(new Botao("Salvar", centro + LARGURA_CAMPO / 2f - 60f, 470f, 140f, 64f,
                 COR_PRINCIPAL, this::registrar));
 
-        boolean temProximo = venceu && jogo.getCarregadorNivel().existeNivel(numeroNivel + 1);
+        boolean temProximo = venceu && jogo.getArquivoNivel().existeNivel(numeroNivel + 1);
         float x = centro - LARGURA_BOTAO / 2f;
         float y = 340f;
         if (temProximo) {
@@ -96,7 +96,7 @@ public class TelaFimDeJogo extends TelaBase {
         if (registrado) {
             return;
         }
-        String nome = GerenciadorArquivoRanking.sanitizarNome(campoNome.getTexto());
+        String nome = ArquivoRanking.sanitizarNome(campoNome.getTexto());
         if (nome.isEmpty()) {
             resultado = "Digite um nome para salvar.";
             return;
@@ -109,7 +109,7 @@ public class TelaFimDeJogo extends TelaBase {
             boolean entrou = jogo.getArquivoRanking().registrar(new RegistroPontuacao(nome, pontos));
             int posicao = jogo.getArquivoRanking().carregarRanking().posicaoDe(nome);
             resultado = entrou ? "Salvo! Você está em " + posicao + "º lugar no ranking."
-                    : "Não superou o recorde/top " + GerenciadorArquivoRanking.MAXIMO_REGISTROS + ".";
+                    : "Não superou o recorde/top " + ArquivoRanking.MAXIMO_REGISTROS + ".";
             registrado = true;
             campoNome.setAtivo(false);
             botaoSalvar.setHabilitado(false);
@@ -121,7 +121,7 @@ public class TelaFimDeJogo extends TelaBase {
 
     private void iniciarNivel(int numero) {
         try {
-            Nivel nivel = jogo.getCarregadorNivel().carregar(numero);
+            Nivel nivel = jogo.getArquivoNivel().carregar(numero);
             jogo.irPara(new TelaJogo(jogo, Partida.criar(nivel, jogo.getAleatorio())));
         } catch (IllegalArgumentException | IllegalStateException e) {
             Gdx.app.error("Fim de jogo", "Falha ao iniciar o nível " + numero, e);

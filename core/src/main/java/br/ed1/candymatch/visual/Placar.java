@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.Objects;
 
 /** Painel superior da partida: nível, pontos, barra de progresso até a meta, jogadas restantes e mensagens. */
-public class Hud {
+public class Placar {
 
     private static final float DURACAO_MENSAGEM = 1.6f;
     private static final float ALTURA_BARRA = 16f;
@@ -31,7 +31,7 @@ public class Hud {
     /** Pontos exibidos sobem gradualmente até o valor real, para o ganho ficar visível. */
     private float pontosExibidos;
 
-    public Hud(float x, float y, float largura, float altura) {
+    public Placar(float x, float y, float largura, float altura) {
         this.x = x;
         this.y = y;
         this.largura = largura;

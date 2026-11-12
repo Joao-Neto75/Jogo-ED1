@@ -1,8 +1,8 @@
 package br.ed1.candymatch;
 
-import br.ed1.candymatch.arquivos.CarregadorNivel;
-import br.ed1.candymatch.arquivos.GerenciadorArquivoRanking;
-import br.ed1.candymatch.arquivos.GerenciadorSalvamento;
+import br.ed1.candymatch.arquivos.ArquivoNivel;
+import br.ed1.candymatch.arquivos.ArquivoRanking;
+import br.ed1.candymatch.arquivos.ArquivoSalvamento;
 import br.ed1.candymatch.telas.TelaMenu;
 import br.ed1.candymatch.visual.Fontes;
 import br.ed1.candymatch.visual.GerenciadorSom;
@@ -28,9 +28,9 @@ public class JogoPrincipal extends Game {
     private ShapeRenderer formas;
     private Fontes fontes;
     private GerenciadorSom som;
-    private CarregadorNivel carregadorNivel;
-    private GerenciadorArquivoRanking arquivoRanking;
-    private GerenciadorSalvamento salvamento;
+    private ArquivoNivel arquivoNivel;
+    private ArquivoRanking arquivoRanking;
+    private ArquivoSalvamento arquivoSalvamento;
     private Random aleatorio;
 
     @Override
@@ -40,9 +40,9 @@ public class JogoPrincipal extends Game {
         fontes = new Fontes();
         som = new GerenciadorSom();
         // internal = somente leitura (assets); local = gravável (ranking e salvamento).
-        carregadorNivel = new CarregadorNivel(Gdx.files.internal(PASTA_NIVEIS));
-        arquivoRanking = new GerenciadorArquivoRanking(Gdx.files.local(ARQUIVO_RANKING));
-        salvamento = new GerenciadorSalvamento(Gdx.files.local(ARQUIVO_SALVAMENTO));
+        arquivoNivel = new ArquivoNivel(Gdx.files.internal(PASTA_NIVEIS));
+        arquivoRanking = new ArquivoRanking(Gdx.files.local(ARQUIVO_RANKING));
+        arquivoSalvamento = new ArquivoSalvamento(Gdx.files.local(ARQUIVO_SALVAMENTO));
         aleatorio = new Random();
         setScreen(new TelaMenu(this));
     }
@@ -72,16 +72,16 @@ public class JogoPrincipal extends Game {
         return som;
     }
 
-    public CarregadorNivel getCarregadorNivel() {
-        return carregadorNivel;
+    public ArquivoNivel getArquivoNivel() {
+        return arquivoNivel;
     }
 
-    public GerenciadorArquivoRanking getArquivoRanking() {
+    public ArquivoRanking getArquivoRanking() {
         return arquivoRanking;
     }
 
-    public GerenciadorSalvamento getSalvamento() {
-        return salvamento;
+    public ArquivoSalvamento getArquivoSalvamento() {
+        return arquivoSalvamento;
     }
 
     public Random getAleatorio() {

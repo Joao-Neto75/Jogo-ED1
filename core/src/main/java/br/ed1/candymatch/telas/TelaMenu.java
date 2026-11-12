@@ -6,7 +6,7 @@ import br.ed1.candymatch.modelo.EstadoPartida;
 import br.ed1.candymatch.modelo.Nivel;
 import br.ed1.candymatch.modelo.TipoGema;
 import br.ed1.candymatch.visual.Botao;
-import br.ed1.candymatch.visual.RenderizadorTabuleiro;
+import br.ed1.candymatch.visual.DesenhoTabuleiro;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -25,7 +25,7 @@ public class TelaMenu extends TelaBase {
     private static final Color COR_PRINCIPAL = new Color(0.95f, 0.3f, 0.55f, 1f);
     private static final Color COR_SECUNDARIA = new Color(0.4f, 0.3f, 0.75f, 1f);
 
-    private final RenderizadorTabuleiro decoracao = new RenderizadorTabuleiro(0, 0, 70f, 1, 1);
+    private final DesenhoTabuleiro decoracao = new DesenhoTabuleiro(0, 0, 70f, 1, 1);
     private final Botao botaoSom;
     private String erro = "";
     private float tempo;
@@ -37,7 +37,7 @@ public class TelaMenu extends TelaBase {
                 () -> jogo.irPara(new TelaSelecaoNivel(jogo))));
         Botao continuar = botoes.adicionar(new Botao("Continuar", x, TOPO_BOTOES - ESPACO_BOTOES, LARGURA_BOTAO,
                 ALTURA_BOTAO, COR_SECUNDARIA, this::continuarPartida));
-        continuar.setHabilitado(jogo.getSalvamento().existeSalvamento());
+        continuar.setHabilitado(jogo.getArquivoSalvamento().existeSalvamento());
         botoes.adicionar(new Botao("Ranking", x, TOPO_BOTOES - 2 * ESPACO_BOTOES, LARGURA_BOTAO, ALTURA_BOTAO,
                 COR_SECUNDARIA, () -> jogo.irPara(new TelaRanking(jogo))));
         botaoSom = botoes.adicionar(new Botao(textoSom(), x, TOPO_BOTOES - 3 * ESPACO_BOTOES, LARGURA_BOTAO,
@@ -47,13 +47,13 @@ public class TelaMenu extends TelaBase {
     }
 
     private void continuarPartida() {
-        Optional<EstadoPartida> estado = jogo.getSalvamento().carregar();
+        Optional<EstadoPartida> estado = jogo.getArquivoSalvamento().carregar();
         if (estado.isEmpty()) {
             erro = "Salvamento inválido ou ausente.";
             return;
         }
         try {
-            Nivel nivel = jogo.getCarregadorNivel().carregar(estado.get().numeroNivel());
+            Nivel nivel = jogo.getArquivoNivel().carregar(estado.get().numeroNivel());
             Partida partida = Partida.restaurar(nivel, estado.get(), jogo.getAleatorio());
             jogo.irPara(new TelaJogo(jogo, partida));
         } catch (IllegalArgumentException | IllegalStateException e) {

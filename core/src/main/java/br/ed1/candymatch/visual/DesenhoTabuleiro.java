@@ -14,7 +14,7 @@ import java.util.Optional;
  *
  * <p>Cada tipo tem cor E forma diferentes, para o jogo ser jogável também por daltônicos.
  */
-public class RenderizadorTabuleiro {
+public class DesenhoTabuleiro {
 
     private static final float PROPORCAO_GEMA = 0.40f;
     private static final float MARGEM_MOLDURA = 12f;
@@ -32,7 +32,7 @@ public class RenderizadorTabuleiro {
     private final Color auxiliar = new Color();
 
     /** @param origemX canto inferior esquerdo do tabuleiro, em coordenadas de mundo */
-    public RenderizadorTabuleiro(float origemX, float origemY, float tamanhoCelula, int linhas, int colunas) {
+    public DesenhoTabuleiro(float origemX, float origemY, float tamanhoCelula, int linhas, int colunas) {
         if (tamanhoCelula <= 0) {
             throw new IllegalArgumentException("Tamanho da célula deve ser positivo: " + tamanhoCelula);
         }

@@ -30,10 +30,10 @@ public class Partida {
     private final Nivel nivel;
     private final Tabuleiro tabuleiro;
     private final BuscadorCombinacoes buscadorCombinacoes;
-    private final GerenciadorGravidade gravidade;
+    private final Gravidade gravidade;
     private final PreenchedorTabuleiro preenchedor;
     private final CalculadoraPontuacao calculadora;
-    private final GerenciadorDesfazer desfazer;
+    private final HistoricoJogadas desfazer;
     private final BuscadorDica buscadorDica;
     private final Fila<EventoTabuleiro> eventos = new Fila<>();
 
@@ -43,8 +43,8 @@ public class Partida {
     private int maiorCascataUltimaJogada;
 
     public Partida(Nivel nivel, Tabuleiro tabuleiro, BuscadorCombinacoes buscadorCombinacoes,
-                   GerenciadorGravidade gravidade, PreenchedorTabuleiro preenchedor,
-                   CalculadoraPontuacao calculadora, GerenciadorDesfazer desfazer, BuscadorDica buscadorDica) {
+                   Gravidade gravidade, PreenchedorTabuleiro preenchedor,
+                   CalculadoraPontuacao calculadora, HistoricoJogadas desfazer, BuscadorDica buscadorDica) {
         this.nivel = Objects.requireNonNull(nivel, "nível não pode ser nulo");
         this.tabuleiro = Objects.requireNonNull(tabuleiro, "tabuleiro não pode ser nulo");
         this.buscadorCombinacoes = Objects.requireNonNull(buscadorCombinacoes, "buscadorCombinacoes não pode ser nulo");
@@ -82,8 +82,8 @@ public class Partida {
         Objects.requireNonNull(aleatorio, "gerador aleatório não pode ser nulo");
         BuscadorCombinacoes buscador = new BuscadorCombinacoes();
         PreenchedorTabuleiro preenchedor = new PreenchedorTabuleiro(nivel.getTiposDisponiveis(), aleatorio);
-        return new Partida(nivel, tabuleiro, buscador, new GerenciadorGravidade(), preenchedor,
-                new CalculadoraPontuacao(), new GerenciadorDesfazer(), new BuscadorDica(buscador));
+        return new Partida(nivel, tabuleiro, buscador, new Gravidade(), preenchedor,
+                new CalculadoraPontuacao(), new HistoricoJogadas(), new BuscadorDica(buscador));
     }
 
     /**

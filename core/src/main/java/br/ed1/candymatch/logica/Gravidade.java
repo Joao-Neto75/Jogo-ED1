@@ -14,7 +14,7 @@ import java.util.Objects;
  *
  * <p>Complexidade: O(linhas × colunas). Ao final, os vazios de cada coluna ficam todos no topo.
  */
-public class GerenciadorGravidade {
+public class Gravidade {
 
     public void aplicar(Tabuleiro tabuleiro, Fila<EventoTabuleiro> eventos) {
         Objects.requireNonNull(tabuleiro, "tabuleiro não pode ser nulo");
