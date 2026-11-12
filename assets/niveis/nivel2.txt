@@ -1,0 +1,3 @@
+metaPontos=2000
+limiteJogadas=18
+tipos=VERMELHA,AZUL,VERDE,AMARELA,ROXA,LARANJA
