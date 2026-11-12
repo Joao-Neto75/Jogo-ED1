@@ -249,3 +249,17 @@ Notas de implementação:
 - O salvamento não guarda o histórico do desfazer: ao continuar, a pilha começa vazia.
 - Sem jogadas possíveis após uma cascata, `Partida` reorganiza o tabuleiro e enfileira `EMBARALHAMENTO`.
 - Gemas são desenhadas com `ShapeRenderer` (cor + forma por tipo), sem imagens; fonte Noto Sans (OFL) em `assets/fontes`.
+- Builds Gradle **e** Maven (wrappers `gradlew`/`mvnw`); alvo apenas Windows e Linux. Módulo de PC = `desktop/` (`IniciarJogo`).
+- Nomes de classes foram simplificados em 2026-11-12 (ex.: `Gravidade`, `HistoricoJogadas`, `Placar`, `ArquivoNivel`).
+
+Git e documentação:
+- Todo o trabalho está no branch `feat/candymatch` (enviado ao GitHub `Joao-Neto75/Jogo-ED1`); `main` só tem o commit inicial.
+  PR para o `main` ainda não foi aberto (aguardando a dupla revisar).
+- Commits em Conventional Commits, em português, sem linha de coautoria.
+- Guia para a dupla (requisito por requisito, roteiro da apresentação, glossário):
+  https://claude.ai/artifact/3oqfbRRMFSk5BWAd2nwDkC
+
+Próximos passos (definir com a dupla):
+- [ ] Revisar o branch e abrir o PR para o `main`
+- [ ] Ensaiar a apresentação seguindo o roteiro do guia
+- [ ] Opcional: gemas especiais (bomba de linha e de cor)
