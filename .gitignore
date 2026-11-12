@@ -39,6 +39,7 @@ target/
 bin/
 out/
 
-# Arquivos gerados pelo jogo em tempo de execução (Gdx.files.local)
-assets/ranking.txt
-assets/salvamento.txt
+# Arquivos gerados pelo jogo em tempo de execução (Gdx.files.local).
+# Ficam na pasta de onde o jogo foi aberto (assets/ no Gradle, raiz no IntelliJ ou onde estiver o jar).
+ranking.txt
+salvamento.txt
