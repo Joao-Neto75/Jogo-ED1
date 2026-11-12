@@ -43,3 +43,7 @@ out/
 # Ficam na pasta de onde o jogo foi aberto (assets/ no Gradle, raiz no IntelliJ ou onde estiver o jar).
 ranking.txt
 salvamento.txt
+
+# Configuração pessoal de assistentes de IA (fica só na máquina local)
+CLAUDE.md
+AGENTS.md
