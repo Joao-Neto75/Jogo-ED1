@@ -1,0 +1,17 @@
+apply plugin: 'application'
+
+application {
+    mainClass = 'br.ed1.candymatch.lwjgl3.Lwjgl3Launcher'
+}
+
+dependencies {
+    implementation project(':core')
+    implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+}
+
+// Gdx.files.internal/local resolvem caminhos relativos à pasta assets.
+tasks.named('run') {
+    workingDir = rootProject.file('assets')
+}

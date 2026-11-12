@@ -1,0 +1,23 @@
+dependencies {
+    api "com.badlogicgames.gdx:gdx:$gdxVersion"
+    // Fontes TTF nítidas e com acentos (a fonte padrão do libGDX é 15px e fica borrada ao ampliar).
+    api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+
+    testImplementation platform("org.junit:junit-bom:$junitVersion")
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+// Modo console da Fase 2: ./gradlew :core:runConsole --console=plain
+tasks.register('runConsole', JavaExec) {
+    group = 'application'
+    description = 'Joga o CandyMatch no terminal, usando só a lógica.'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'br.ed1.candymatch.console.JogoConsole'
+    workingDir = rootProject.projectDir
+    standardInput = System.in
+}
